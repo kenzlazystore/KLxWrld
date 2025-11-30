@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<title>KenzLazy Store — Ultra Premium (Trusted + QRIS & DANA)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/feather-icons"></script>
+
+<style>
+/* ===========================
+   BASE + LAYOUT
+   =========================== */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#090013 0%,#150028 50%,#1a0050 100%);
+  background-size:200% 200%;
+  animation:bgMove 14s infinite alternate;
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-y:auto;
+  transition:background .4s;
+  -webkit-text-size-adjust:100%;
+}
+@keyframes bgMove{0%{background-position:0% 0%}100%{background-position:100% 100%}}
+
+/* small utility */
+.container{width:92%;max-width:980px;margin:0 auto}
+
+/* LOADING */
+#loading{
+  position:fixed; inset:0;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:#050012; z-index:3000;
+}
+.loading-text{font-weight:600;margin-bottom:14px;opacity:.96;font-size:17px}
+.dots{display:flex;gap:10px}
+.dots div{
+  width:12px;height:12px;border-radius:50%;
+  background:linear-gradient(90deg,#b37aff,#7f4dff);
+  animation:bounce .65s infinite alternate;
+}
+.dots div:nth-child(2){animation-delay:.12s}
+.dots div:nth-child(3){animation-delay:.24s}
+@keyframes bounce{to{transform:translateY(-10px);opacity:.6}}
+
+/* NAVBAR */
+.navbar{
+  position:fixed; top:0; left:0; right:0;
+  padding:12px 18px; display:flex;align-items:center;gap:12px;
+  backdrop-filter:blur(14px);
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 6px 30px rgba(0,0,0,0.45);
+  z-index:1000;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.nav-title{font-weight:600;letter-spacing:.6px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.status-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
+  background:linear-gradient(90deg,rgba(0,0,0,0.15),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.06);font-size:13px;
+}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#2bff9a;box-shadow:0 0 8px rgba(43,255,154,0.25);animation:ping 1.8s infinite}
+@keyframes ping{50%{transform:scale(.9)}}
+
+/* HERO */
+.header-space{height:112px}
+.logo-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:26px}
+.logo{
+  width:78px;height:78px;border-radius:50%;
+  background:linear-gradient(135deg,#ffffff10,#ffffff06);
+  box-shadow:0 0 26px rgba(170,120,255,0.18);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.logo img{width:68px;height:68px;border-radius:50%;}
+.main-title{margin-top:6px;font-size:22px;font-weight:700;letter-spacing:1px}
+
+/* TRUST ROW */
+.trust-row{width:100%;max-width:980px;margin:18px auto 6px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.badge{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+  background:linear-gradient(90deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 6px 22px rgba(10,0,20,0.25);
+  font-size:13px;
+}
+
+/* CTA */
+.cta-row{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:12px}
+.cta{
+  padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,#8e5cff,#6f3bff);
+  color:white;text-decoration:none;font-weight:600;border:0;
+  box-shadow:0 10px 30px rgba(110,60,255,0.14);
+  display:inline-flex;gap:10px;align-items:center;
+}
+
+/* PRODUCTS */
+.section{width:100%;max-width:980px;margin:18px auto}
+.product-card{
+  margin:18px auto;padding:12px;border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.06);
+}
+.product-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:760px){.product-grid{grid-template-columns:repeat(2,1fr)}}
+.product-card h3{font-size:17px;margin-bottom:6px}
+.product-card p{opacity:.85;font-size:14px}
+.price-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.price-box{
+  padding:8px 12px;border-radius:12px;background:linear-gradient(90deg,#b98bff,#7f4dff);
+  color:#0b0014;font-weight:700;font-size:14px;border:0;
+}
+.buy-btn{
+  padding:10px 12px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:white;text-decoration:none;font-weight:600;
+}
+
+/* PRODUCT PREVIEW (1:1) */
+.preview-wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.preview-box{
+  width:220px;height:220px;border-radius:12px;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,0.04);
+  display:flex;align-items:center;justify-content:center;
+}
+.preview-box img{width:100%;height:100%;object-fit:cover;aspect-ratio:1/1}
+
+/* TRUST CERTS */
+.trust-certs{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.cert{padding:12px;border-radius:12px;background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);display:flex;gap:10px;align-items:center}
+
+/* TESTIMONIALS (slider) */
+.testi-section{margin-top:18px}
+.slider-wrap{position:relative;max-width:920px;margin:12px auto;border-radius:12px;overflow:hidden}
+.slides{display:flex;transition:transform 0.45s ease}
+.slide{min-width:100%;flex-shrink:0;padding:0}
+.slide img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block}
+
+/* slider nav */
+.slider-nav{position:absolute;left:10px;right:10px;top:50%;display:flex;justify-content:space-between;transform:translateY(-50%)}
+.slider-btn{background:rgba(0,0,0,0.45);color:#fff;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:18px;line-height:1}
+
+/* dots */
+.dots-wrap{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.28);cursor:pointer}
+.dot.active{background:linear-gradient(90deg,#b98bff,#7f4dff);box-shadow:0 6px 18px rgba(120,80,255,0.12)}
+
+/* STEPS & RULES */
+.steps{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.step{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.step .num{width:36px;height:36;border-radius:10px;background:#8e5cff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.rules{margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04)}
+
+/* MODALS */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:2500;padding:20px}
+.modal{width:100%;max-width:420px;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03));border:1px solid rgba(255,255,255,0.12);backdrop-filter:blur(12px);padding:18px;border-radius:14px;text-align:center;}
+.modal img{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,0.12)}
+.modal .muted{opacity:.85;font-size:14px;margin-top:10px}
+
+/* DANA */
+.dana-box{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:10px}
+.dana-num{background:rgba(255,255,255,0.06);padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);width:100%;text-align:center;font-weight:700}
+.copy-btn{margin-top:8px;padding:10px 12px;border-radius:12px;background:linear-gradient(90deg,#8e5cff,#6f3bff);border:0;color:white;cursor:pointer}
+
+/* footer */
+.footer{opacity:.75;text-align:center;padding:24px 8px;margin-top:30px;font-size:13px}
+
+/* responsiveness */
+@media(max-width:420px){
+  .preview-box{width:160px;height:160px}
+  .slider-nav .slider-btn{padding:6px 8px;font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="loading-text">KenzLazy Store — Memuat...</div>
+  <div class="dots"><div></div><div></div><div></div></div>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar container" role="navigation" aria-label="Top">
+  <div class="brand" aria-hidden="true">
+    <img src="https://i.postimg.cc/pXwXQqPf/file-0000000008b472079cb0cf70d07c23e4-(1).png" alt="logo">
+    <div class="nav-title">KenzLazy Store</div>
+  </div>
+
+  <div class="nav-right">
+    <div class="status-pill" title="Admin online sekarang">
+      <div class="status-dot" aria-hidden="true"></div>
+      <div style="font-size:13px">Admin Online</div>
+    </div>
+
+    <div class="status-pill" title="Layanan 24/7">
+      <svg viewBox="0 0 24 24" fill="none" width="16" height="16" aria-hidden="true">
+        <path d="M12 2l7 3v5c0 5-3.6 10-7 12-3.4-2-7-7-7-12V5l7-3z" fill="rgba(255,255,255,0.95)"/>
+      </svg>
+      <div style="font-size:13px">24/7 Support</div>
+    </div>
+  </div>
+</div>
+
+<div class="header-space"></div>
+
+<!-- HERO -->
+<div class="container logo-wrap" role="banner" aria-label="KenzLazy hero">
+  <div class="logo"><img src="https://i.postimg.cc/pXwXQqPf/file-0000000008b472079cb0cf70d07c23e4-(1).png" alt="KenzLazy logo"></div>
+  <div class="main-title">KENZ&LAZY OFFICIAL STORE • Trusted</div>
+
+  <div class="trust-row" role="contentinfo" style="margin-top:6px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="badge" title="Penjual Terpercaya">
+        <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 2l3 6 6 .5-4.5 4 1 6-5.5-3-5.5 3 1-6L3 8.5 9 8 12 2z" fill="#fff"/></svg>
+        <div>
+          <div style="font-weight:700">Trusted Seller</div>
+          <div style="font-size:12px;opacity:.8">4.9/5 • 870+ review</div>
+        </div>
+      </div>
+
+      <div class="badge" title="Garansi Refund">
+        <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 1v11" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><path d="M21 7c0 5.5-4.5 10-9 10S3 12.5 3 7" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <div>
+          <div style="font-weight:700">Garansi Refund</div>
+          <div style="font-size:12px;opacity:.8">Work or Refund</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="counters" aria-hidden="true">
+      <div class="counter"><div class="num" id="orders">0</div><div class="label">Pesanan Bulan Ini</div></div>
+      <div class="counter"><div class="num" id="active">0</div><div class="label">Pelanggan Aktif</div></div>
+      <div class="counter"><div class="num" id="rating">0</div><div class="label">Rating (avg)</div></div>
+    </div>
+  </div>
+
+  <div class="cta-row" style="margin-top:12px">
+    <a class="cta" href="https://wa.me/62882016526450" target="_blank" rel="noopener noreferrer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M..."></path></svg> Chat Admin</a>
+    <a class="cta" href="#menu-dk" style="background:transparent;border:1px solid rgba(255,255,255,0.06);">Lihat Paket</a>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="section container" aria-labelledby="products">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h2 id="products" style="font-size:18px">Produk & Paket</h2>
+    <div style="font-size:13px;opacity:.85">Proses cepat • Support 24/7</div>
+  </div>
+
+  <div class="product-grid" style="margin-top:12px">
+    <!-- ROOM WANGI -->
+    <div class="product-card">
+      <h3>Room Wangi</h3>
+      <p>Ready 24 Jam — Fast Proses • Aman digunakan</p>
+
+      <div class="preview-wrap">
+        <div class="preview-box">
+          <img src="https://i.postimg.cc/59nyJBM0/Screenshot-2025-11-30-12-16-15-511-com-whatsapp.jpg" alt="Preview Room Wangi">
+        </div>
+        <div style="flex:1">
+          <div style="font-weight:700">Room Wangi — Paket Single</div>
+          <div style="margin-top:6px;color:rgba(255,255,255,0.85)">Format: File Digital · Support 24/7</div>
+
+          <div class="price-row" style="margin-top:12px">
+            <div class="price-box">Rp 80.000</div>
+            <a class="buy-btn" href="https://wa.me/62882016526450?text=OYY%20LEK%20MAU%20ORDER%20ROOM%20WANGI%20GACOR%0ANama%3A%0AMau%20beli%3A%20Room%20Wangi%0AHarga%3A%20Rp%2080.000%0AMetode%20bayar%3A%0AAlamat%20%2F%20No%20HP%3A%0ACatatan%3A" target="_blank" rel="noopener noreferrer">Beli via WA</a>
+
+            <!-- Payment buttons: keep layout D (follow original but separated modals) -->
+            <button class="buy-btn" style="margin-left:8px;padding:10px 12px" onclick="openModal('danaModal')">Bayar via DANA</button>
+            <button class="buy-btn" style="margin-left:8px;padding:10px 12px" onclick="openModal('qrisModal')">Bayar via QRIS</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VPN PREMIUM -->
+    <div class="product-card">
+      <h3>VPN Premium</h3>
+      <p>Stabil — Anti Lemot — Full Speed</p>
+
+      <div class="preview-wrap">
+        <div class="preview-box">
+          <img src="https://i.postimg.cc/y6vxKmzx/Screenshot-2025-11-30-12-16-22-743-com-whatsapp.jpg" alt="Preview VPN Premium">
+        </div>
+        <div style="flex:1">
+          <div style="font-weight:700">VPN Premium — Paket Single</div>
+          <div style="margin-top:6px;color:rgba(255,255,255,0.85)">Format: File Digital · Support 24/7</div>
+
+          <div class="price-row" style="margin-top:12px">
+            <div class="price-box">Rp 10.000</div>
+            <a class="buy-btn" href="https://wa.me/62882016526450?text=OYY%20LEK%20MAU%20ORDER%20VPN%20PREMIUM%20GACOR%0ANama%3A%0AMau%20beli%3A%20VPN%20Premium%0AHarga%3A%20Rp%2010.000%0AMetode%20bayar%3A%0AAlamat%20%2F%20No%20HP%3A%0ACatatan%3A" target="_blank" rel="noopener noreferrer">Beli via WA</a>
+            <button class="buy-btn" style="margin-left:8px;padding:10px 12px" onclick="openModal('danaModal')">Bayar via DANA</button>
+            <button class="buy-btn" style="margin-left:8px;padding:10px 12px" onclick="openModal('qrisModal')">Bayar via QRIS</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUG INDO -->
+    <div class="product-card">
+      <h3>Bug Indo</h3>
+      <p>Full Akses — Fix — Fast Update</p>
+
+      <div class="preview-wrap">
+        <div class="preview-box">
+          <img src="https://i.postimg.cc/59nyJBMj/Screenshot-2025-11-30-12-16-28-232-com-whatsapp.jpg" alt="Preview Bug Indo">
+        </div>
+        <div style="flex:1">
+          <div style="font-weight:700">Bug Indo — Paket Single</div>
+          <div style="margin-top:6px;color:rgba(255,255,255,0.85)">Format: File Digital · Support 24/7</div>
+
+          <div class="price-row" style="margin-top:12px">
+            <div class="price-box">Rp 10.000</div>
+            <a class="buy-btn" href="https://wa.me/62882016526450?text=OYY%20LEK%20MAU%20ORDER%20BUG%20INDO%20GACOR%0ANama%3A%0AMau%20beli%3A%20Bug%20Indo%0AHarga%3A%20Rp%2010.000%0AMetode%20bayar%3A%0AAlamat%20%2F%20No%20HP%3A%0ACatatan%3A" target="_blank" rel="noopener noreferrer">Beli via WA</a>
+            <button class="buy-btn" style="margin-left:8px;padding:10px 12px" onclick="openModal('danaModal')">Bayar via DANA</button>
+            <button class="buy-btn" style="margin-left:8px;padding:10px 12px" onclick="openModal('qrisModal')">Bayar via QRIS</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DK ALARA -->
+    <div class="product-card" id="menu-dk">
+      <h3>DK Alara — Paket Durasi</h3>
+      <p>Pilih sesuai kebutuhan — Ready 24 Jam</p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <div class="price-box">1 Day — 20K</div>
+        <div class="price-box">3 Day — 30K</div>
+        <div class="price-box">7 Day — 60K</div>
+        <div class="price-box">30 Day — 110K</div>
+      </div>
+      <div style="margin-top:10px">
+        <a class="buy-btn" href="https://wa.me/62882016526450?text=OYY%20LEK%20MAU%20ORDER%20DK%20ALARA%20GACOR%0ANama%3A%0AMau%20beli%3A%20DK%20Alara%20(ketik%20durasi)%0AHarga%3A%0AMetode%20bayar%3A%0AAlamat%20%2F%20No%20HP%3A%0ACatatan%3A" target="_blank" rel="noopener noreferrer">Beli Paket</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust certs -->
+  <div class="trust-certs">
+    <div class="cert" title="Verified Service">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 6 .5-4.5 4 1 6-5.5-3-5.5 3 1-6L3 8.5 9 8 12 2z" fill="#fff"/></svg>
+      <div><div style="font-weight:700">Verified Service</div><div style="font-size:13px;opacity:.8">Quality Checked</div></div>
+    </div>
+
+    <div class="cert" title="Secure Payment">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="#fff" stroke-width="1.2"/></svg>
+      <div><div style="font-weight:700">Secure Payment</div><div style="font-size:13px;opacity:.8">No hidden fee</div></div>
+    </div>
+
+    <div class="cert" title="Ready 24/7">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v6l4 2" stroke="#fff" stroke-width="1.2"/></svg>
+      <div><div style="font-weight:700">24/7 Support</div><div style="font-size:13px;opacity:.8">Fast Response</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT METHODS (buttons kept, modals separated) -->
+<section class="section container" aria-labelledby="payments" style="margin-top:12px">
+  <h2 id="payments" style="font-size:18px">Metode Pembayaran</h2>
+  <p style="opacity:.85;margin-top:6px">Pembayaran aman via QRIS (scan) atau DANA (transfer). Pilih tombol untuk melihat instruksi.</p>
+
+  <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+    <button onclick="openModal('qrisModal')" class="cta" style="padding:10px 14px">🔒 Bayar dengan QRIS</button>
+    <button onclick="openModal('danaModal')" class="cta" style="padding:10px 14px;background:linear-gradient(90deg,#00bfa5,#00e676)">💳 Bayar via DANA</button>
+  </div>
+</section>
+
+<!-- QRIS MODAL (separated) -->
+<div id="qrisModal" class="modal-backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="QRIS Pembayaran">
+    <h3>QRIS Pembayaran</h3>
+    <p class="muted">Scan QRIS berikut menggunakan aplikasi e-wallet / mobile banking Anda. (QRIS terpisah dari DANA)</p>
+    <img src="https://i.postimg.cc/bwwRpgnb/IMG-20251129-191255.jpg" alt="QRIS Pembayaran (scan)" />
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+      <button onclick="closeModal('qrisModal')" class="copy-btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12)">Tutup</button>
+      <a href="https://wa.me/62882016526450" target="_blank" rel="noopener noreferrer" class="copy-btn" style="background:linear-gradient(90deg,#8e5cff,#6f3bff);text-decoration:none">Konfirmasi Bayar (Chat Admin)</a>
+    </div>
+    <div style="font-size:13px;opacity:.85;margin-top:10px">Kirim bukti transfer / screenshot ke admin agar verifikasi cepat.</div>
+  </div>
+</div>
+
+<!-- DANA MODAL (separated, NO QR IMAGE here unless you provide distinct QR) -->
+<div id="danaModal" class="modal-backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Pembayaran DANA">
+    <h3>Pembayaran via DANA</h3>
+    <p class="muted">Transfer ke nomor DANA berikut, atau screenshot lalu kirim ke admin sebagai bukti. (QR DANA tidak ditampilkan di modal ini — dipisah dari QRIS)</p>
+
+    <div class="dana-box">
+      <div style="font-size:13px;opacity:.9">Akun DANA</div>
+      <div class="dana-num" id="danaNumber">0881-1955-435</div>
+      <div style="font-size:13px;opacity:.85">A/N: Kenz Lazy</div>
+
+      <button class="copy-btn" onclick="copyDana()">📋 Salin Nomor</button>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+      <button onclick="closeModal('danaModal')" class="copy-btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12)">Tutup</button>
+      <a href="https://wa.me/62882016526450" target="_blank" rel="noopener noreferrer" class="copy-btn" style="background:linear-gradient(90deg,#00bfa5,#00e676);text-decoration:none">Konfirmasi Bayar (Chat Admin)</a>
+    </div>
+
+    <div style="font-size:12px;opacity:.8;margin-top:10px">Jika kamu punya QR DANA terpisah silakan kirim gambarnya — kami pasang di modal terpisah jika diminta.</div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS (slider 1:1) -->
+<section class="section testi-section container" aria-labelledby="testi">
+  <h2 id="testi" style="font-size:18px">Testimoni Pelanggan</h2>
+  <div style="margin-top:12px;display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap">
+    <div style="opacity:.85;font-size:13px">Bukti nyata dari pelanggan kami — jujur & realtime</div>
+    <div style="font-size:13px;opacity:.85">Rating rata-rata <strong>4.9/5</strong></div>
+  </div>
+
+  <div class="slider-wrap" id="sliderWrap" aria-hidden="false" style="margin-top:12px">
+    <div class="slides" id="slides">
+      <div class="slide"><img src="https://i.postimg.cc/59nyJBM0/Screenshot-2025-11-30-12-16-15-511-com-whatsapp.jpg" alt="testi1"></div>
+      <div class="slide"><img src="https://i.postimg.cc/y6vxKmzx/Screenshot-2025-11-30-12-16-22-743-com-whatsapp.jpg" alt="testi2"></div>
+      <div class="slide"><img src="https://i.postimg.cc/59nyJBMj/Screenshot-2025-11-30-12-16-28-232-com-whatsapp.jpg" alt="testi3"></div>
+      <div class="slide"><img src="https://i.postimg.cc/MZdHw78w/Screenshot-2025-11-30-12-16-33-959-com-whatsapp.jpg" alt="testi4"></div>
+    </div>
+
+    <div class="slider-nav" aria-hidden="false">
+      <button class="slider-btn" id="prevSlide" aria-label="Previous">‹</button>
+      <button class="slider-btn" id="nextSlide" aria-label="Next">›</button>
+    </div>
+  </div>
+
+  <div class="dots-wrap" id="dotsWrap" style="max-width:920px;margin:8px auto 0;"></div>
+
+  <div class="hint" style="color:rgba(255,255,255,0.8);margin-top:8px">Geser (swipe) atau gunakan tombol navigasi. Klik konfirmasi di modal untuk mengirim bukti pembayaran ke admin.</div>
+</section>
+
+<!-- PURCHASE FLOW & RULES -->
+<section class="section container">
+  <h2 style="font-size:18px">Cara Pembelian (Simple)</h2>
+
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div><div style="font-weight:700">Pilih Produk</div><div style="opacity:.85;font-size:13px;margin-top:6px">Klik 'Beli' atau chat admin.</div></div></div>
+
+    <div class="step"><div class="num">2</div><div><div style="font-weight:700">Chat Admin</div><div style="opacity:.85;font-size:13px;margin-top:6px">Kirim data & pembayaran (QRIS/DANA)</div></div></div>
+
+    <div class="step"><div class="num">3</div><div><div style="font-weight:700">Proses Cepat</div><div style="opacity:.85;font-size:13px;margin-top:6px">Order selesai rata-rata <strong>1-10 menit</strong>.</div></div></div>
+
+    <div class="step"><div class="num">4</div><div><div style="font-weight:700">Selesai & Support</div><div style="opacity:.85;font-size:13px;margin-top:6px">Butuh bantuan pasca-order? Kami 24/7.</div></div></div>
+  </div>
+
+  <div class="rules" style="margin-top:12px">
+    <strong>Aturan & Garansi singkat:</strong>
+    <ul style="margin-top:8px;line-height:1.6;opacity:.9">
+      <li>Garansi: Work or Refund (lihat syarat di chat admin).</li>
+      <li>Jangan share data sensitif ke pihak lain.</li>
+      <li>Proses biasanya 1–10 menit, tergantung paket.</li>
+      <li>Kami tidak menyimpan password/akun pelanggan.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer container">
+  © 2025 KenzLazy Store — Trusted Service • Kontak: <a href="https://wa.me/62882016526450" style="color:#bda3ff;text-decoration:none">WA Admin</a>
+</div>
+
+<script>
+feather.replace();
+
+/* hide loading after animation, then start counters/testi/slider */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const L = document.getElementById('loading');
+    if(L){ L.style.transition='opacity .45s ease'; L.style.opacity='0'; setTimeout(()=>L.remove(),500) }
+    animateCounters();
+    startTestiAutoScroll();
+    initSlider();
+  },800);
+});
+
+/* generic open/close modal */
+function openModal(id){
+  const el = document.getElementById(id);
+  if(el) el.style.display = 'flex';
+}
+function closeModal(id){
+  const el = document.getElementById(id);
+  if(el) el.style.display = 'none';
+}
+
+/* Counters animation */
+function animateValue(el, start, end, duration){
+  if(!el) return;
+  let startTime = null;
+  const step = (timestamp)=>{
+    if(!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime)/duration,1);
+    const val = Math.floor(progress*(end-start)+start);
+    el.textContent = val.toLocaleString();
+    if(progress < 1) window.requestAnimationFrame(step);
+  }
+  window.requestAnimationFrame(step);
+}
+function animateCounters(){
+  animateValue(document.getElementById('orders'), 0, 729, 1200);
+  animateValue(document.getElementById('active'), 0, 1200, 1200);
+  const ratingEl = document.getElementById('rating');
+  let rStart = 0, rEnd = 49, sTime=null;
+  function step(t){
+    if(!sTime) sTime=t;
+    const p=Math.min((t-sTime)/1000,1);
+    const v=Math.floor(rStart + (rEnd-rStart)*p);
+    ratingEl.textContent = (v/10).toFixed(1);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* Testimonial grid auto-scroll (fallback) */
+function startTestiAutoScroll(){
+  const grid = document.getElementById('testiGrid');
+  if(!grid) return;
+  let pos=0, cardWidth = 272;
+  setInterval(()=>{
+    pos += cardWidth;
+    if(pos > grid.scrollWidth - grid.clientWidth) pos = 0;
+    grid.scrollTo({left: pos, behavior: 'smooth'});
+  },3800);
+}
+
+/* copy DANA number */
+function copyDana(){
+  const danaText = document.getElementById('danaNumber').textContent;
+  if(!navigator.clipboard) {
+    const ta = document.createElement('textarea'); ta.value = danaText; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove();
+    alert('Nomor DANA disalin: ' + danaText);
+    return;
+  }
+  navigator.clipboard.writeText(danaText).then(()=>{
+    alert('Nomor DANA berhasil disalin: ' + danaText);
+  }).catch(()=>{ alert('Gagal menyalin. Silakan salin manual: ' + danaText); });
+}
+
+/* allow close modal by clicking backdrop (but not when clicking content) */
+document.querySelectorAll('.modal-backdrop').forEach(back=>{
+  back.addEventListener('click', (e)=>{
+    if(e.target === back){
+      back.style.display = 'none';
+    }
+  });
+});
+
+/* SLIDER (touch + buttons + dots) */
+let sliderIndex = 0, slideCount = 0, sliderInterval = null;
+function initSlider(){
+  const slides = document.querySelectorAll('.slide');
+  const slidesContainer = document.getElementById('slides');
+  const dotsWrap = document.getElementById('dotsWrap');
+  if(!slides.length || !slidesContainer || !dotsWrap) return;
+  slideCount = slides.length;
+
+  // create dots
+  dotsWrap.innerHTML = '';
+  for(let i=0;i<slideCount;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0 ? ' active' : '');
+    d.dataset.index = i;
+    d.addEventListener('click', ()=>{ goToSlide(parseInt(d.dataset.index)); });
+    dotsWrap.appendChild(d);
+  }
+
+  // prev/next
+  const prevEl = document.getElementById('prevSlide');
+  const nextEl = document.getElementById('nextSlide');
+  if(prevEl) prevEl.addEventListener('click', ()=>{ prevSlide(); resetAuto(); });
+  if(nextEl) nextEl.addEventListener('click', ()=>{ nextSlide(); resetAuto(); });
+
+  // touch support
+  let startX = 0, moveX = 0, isDown=false;
+  slidesContainer.addEventListener('touchstart', (e)=>{
+    isDown = true; startX = e.touches[0].clientX;
+  }, {passive:true});
+  slidesContainer.addEventListener('touchmove', (e)=>{
+    if(!isDown) return;
+    moveX = e.touches[0].clientX - startX;
+  }, {passive:true});
+  slidesContainer.addEventListener('touchend', ()=>{
+    if(!isDown) return;
+    isDown = false;
+    if(Math.abs(moveX) > 40){
+      if(moveX < 0) nextSlide(); else prevSlide();
+      resetAuto();
+    }
+    moveX = 0;
+  });
+
+  // autorepeat
+  sliderInterval = setInterval(()=>{ nextSlide(); }, 3500);
+  updateSlidePosition();
+}
+function updateSlidePosition(){
+  const slidesContainer = document.getElementById('slides');
+  if(!slidesContainer) return;
+  slidesContainer.style.transform = `translateX(-${sliderIndex * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('active', i===sliderIndex));
+}
+function nextSlide(){ sliderIndex = (sliderIndex + 1) % slideCount; updateSlidePosition(); }
+function prevSlide(){ sliderIndex = (sliderIndex - 1 + slideCount) % slideCount; updateSlidePosition(); }
+function goToSlide(i){ sliderIndex = i % slideCount; updateSlidePosition(); resetAuto(); }
+function resetAuto(){ clearInterval(sliderInterval); sliderInterval = setInterval(()=>{ nextSlide(); }, 3500); }
+
+/* helpers (open specific) */
+function openQRIS(){ openModal('qrisModal'); }
+function openDANA(){ openModal('danaModal'); }
+</script>
+
+</body>
+</html>
